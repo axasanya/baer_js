@@ -1,0 +1,9 @@
+.magic.portrait {
+    height: 150px;
+    width: auto;
+}
+
+.magic.landscape {
+    width: 300px;
+    height: auto;
+}

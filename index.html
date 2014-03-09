@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.ui.map.full.min.js" ></script>
+<!-- script type="text/javascript" src="js/gmap3.min.js"></script -->
+<script type="text/javascript">
+   /* */
+   $(document).ready(function () {
+
+       initialize();
+       $('.magic').each(function(){
+           if($(this).width() > $(this).height()){
+               $(this).addClass('landscape');
+           }else{
+               $(this).addClass('portrait');
+           }
+       });
+   });
+
+   function initialize(){
+       $('#map_canvas').gmap().bind('init', function(event, map) {
+           $.getJSON( "baer_api/baerlist.json", function( data ) {
+               var items = [];
+               $.each( data, function( key, val ) {
+                   $('#map_canvas').gmap('addMarker', {'position': val.latitude + ',' + val.longitude, 'bounds': true}).click(function () {
+                       $('#map_canvas').gmap('openInfoWindow', {'content': getHtmlContent(val.id, val.image_name)} , this);
+                   });
+               });
+           });
+       });
+   }
+
+    function getHtmlContent(id, imageName){
+        return '<div><img class="magic portrait" src="images/' + imageName + '"/></div>';
+    }
+
+</script>
+<div id="map_canvas" style="width:500px;height:500px"></div>
+</body>
+</html>
